@@ -1,0 +1,65 @@
+{
+    "title": "콜라워크",
+    "accept": "칭찬하기",
+    "decline": "취소",
+    "value": "{request_modal의 응답으로 전송한 value 값}",
+    "blocks": [
+      {
+        "type": "label",
+        "text": "칭찬할 친구를 골라봅시다.",
+        "markdown": true
+      },
+      {
+        "type": "select",
+        "name": "select_name1",
+        "options": [
+          {
+            "text": "test",
+            "value": "1"
+          },
+          {
+            "text": "옵션 2",
+            "value": "2"
+          }
+        ],
+        "required": false,
+        "placeholder": "옵션을 선택해주세요"
+      },
+      {
+        "type": "label",
+        "text": "칭찬 가치 선택",
+        "markdown": true
+      },
+      {
+        "type": "select",
+        "name": "select_name2",
+        "options": [
+          {
+            "text": "#창의성",
+            "value": "1"
+          },
+          {
+            "text": "#열정",
+            "value": "2"
+          },
+          {
+            "text": "#리더십",
+            "value": "3"
+          }
+        ],
+        "required": false,
+        "placeholder": "옵션을 선택해주세요"
+      },
+      {
+        "type": "label",
+        "text": "칭찬 메시지 입력",
+        "markdown": true
+      },
+      {
+        "type": "input",
+        "name": "input_name1",
+        "required": false,
+        "placeholder": "칭찬내용을 입력해주세요"
+      }
+    ]
+  }
