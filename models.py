@@ -9,3 +9,6 @@ class Complement(db.Model):
     senderid = db.Column(db.Integer)
     complement_value = db.Column(db.String(16))
     complement_content = db.Column(db.String(128))
+
+    def __repr__(self):
+        return "<('%s','%s','%s','%s')>" % (self.id, self.senderid, self.complement_value, self.complement_content)

@@ -22,7 +22,7 @@ def index():
 
         # 원래면 여기에 예외처리 조건문
         complement = Complement()
-        complement.id = 1
+        complement.id = 3
         complement.senderid = 1
         complement.complement_value = '칭찬'
         complement.complement_content = '얘는 착하다.'
@@ -44,6 +44,19 @@ def modal():
     return json_data
 
 
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == 'GET':
+        my_complement_count = Complement.query.filter_by(id=1).count() # 칭찬받은 횟수
+        complemented = Complement.query.filter_by(senderid=1) # 칭찬한 횟수
+        complemented_array = []
+        for p in complemented:
+            complemented_array.append(p.complement_value)
+        print('칭찬받은 횟수 : %s 칭찬한 횟수 : %s 내용 : %s' %(my_complement_count, complemented.count(), complemented_array))
+        
+    return json_data
+
+
 def make_users_array():
     URL = 'https://api.kakaowork.com/v1/users.list'
     headers = {'Content-Type': 'application/json; charset=utf-8',
@@ -56,10 +69,11 @@ def make_users_array():
 
     return users
 
+
 # DB Setting
 basedir = os.path.abspath(os.path.dirname(__file__))
 dbfile = os.path.join(basedir, 'db.sqlite')
- 
+
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///"+dbfile
 app.config['SQLALCHEMY_COMMIT_ON_TREEDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
