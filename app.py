@@ -42,6 +42,7 @@ def index():
 def modal():
     if request.method == 'POST':
         print(request.data['type'])
+        # 첫번째 옵션에 워크스페이스 인원들을 추가
         json_data['blocks'][1]['options'] = get_userNames()
     return json_data
 
@@ -50,7 +51,6 @@ def modal():
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
-        
         my_complement_count = Complement.query.filter_by(id=1).count() # 칭찬받은 횟수
         complemented = Complement.query.filter_by(senderid=1) # 칭찬한 횟수
         complemented_array = []
@@ -61,7 +61,7 @@ def search():
     return json_data
 
 # 유저 중 한명이 칭찬을 했을 경우 단톡에 결과 메시지를 보냄
-def send_result_message():
+def make_users_array():
     URL = 'https://api.kakaowork.com/v1/conversations.open'
     headers = {'Content-Type': 'application/json;',
                'Authorization': 'Bearer c856d570.9901b06a691f4c3da28d3ad830a4e658'}
