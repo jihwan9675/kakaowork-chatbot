@@ -12,3 +12,6 @@ class Complement(db.Model):
 
     def __repr__(self):
         return "<('%s','%s','%s','%s')>" % (self.id, self.senderid, self.complement_value, self.complement_content)
+    
+    def message_notify(self):
+        return "%s님이 %s님에게 칭찬을 하였습니다." % (self.senderid, self.id)
