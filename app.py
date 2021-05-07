@@ -9,7 +9,9 @@ from models import db, Complement
 
 app = Flask(__name__)
 conversation_id_unique = ''  # 단톡 ID
-
+headers = {
+    'Authorization': 'Bearer c856d570.9901b06a691f4c3da28d3ad830a4e658', 'Content-Type': 'application/json;'
+}
 # Modal Json 파일 읽어오기
 with open('modal.json', 'r') as f:
     json_data = json.load(f)
@@ -71,14 +73,14 @@ def search():
 
 # 단톡 생성
 def makeConversations():
+    global conversation_id_unique
     userids = get_userIds()
+
     URL = 'https://api.kakaowork.com/v1/conversations.open'
-    headers = {
-        'Authorization': 'Bearer c856d570.9901b06a691f4c3da28d3ad830a4e658', 'Content-Type': 'application/json;'}
     data = {'user_ids': userids}
     res = requests.post(URL, headers=headers, data=json.dumps(data))
     res = res.json()
-    global conversation_id_unique
+
     conversation_id_unique = res['conversation']['id']
     inviteUsers()
 
@@ -87,8 +89,6 @@ def makeConversations():
 def inviteUsers():
     URL = 'https://api.kakaowork.com/v1/conversations/{conversation_id}/invite'.format(
         conversation_id=conversation_id_unique)
-    headers = {
-        'Authorization': 'Bearer c856d570.9901b06a691f4c3da28d3ad830a4e658', 'Content-Type': 'application/json;'}
     data = {'user_ids': get_userIds()}
     res = requests.post(URL, headers=headers, data=json.dumps(data))
 
@@ -96,8 +96,6 @@ def inviteUsers():
 # 단톡에 메시지 보내기
 def sendMessage(message):
     URL = 'https://api.kakaowork.com/v1/messages.send'
-    headers = {
-        'Authorization': 'Bearer c856d570.9901b06a691f4c3da28d3ad830a4e658', 'Content-Type': 'application/json;'}
     data = {'conversation_id': conversation_id_unique, 'text': message}
     res = requests.post(URL, headers=headers, data=json.dumps(data))
 
@@ -105,8 +103,6 @@ def sendMessage(message):
 # 유저 이름과 인덱스를 매칭한 딕셔너리를 담는 배열 생성
 def get_userNames():
     URL = 'https://api.kakaowork.com/v1/users.list'
-    headers = {'Content-Type': 'application/json; charset=utf-8',
-               'Authorization': 'Bearer c856d570.9901b06a691f4c3da28d3ad830a4e658'}
     res = requests.get(URL, headers=headers)
 
     users = []
@@ -119,8 +115,6 @@ def get_userNames():
 # 유저 id 배열 생성
 def get_userIds():
     URL = 'https://api.kakaowork.com/v1/users.list'
-    headers = {'Content-Type': 'application/json; charset=utf-8',
-               'Authorization': 'Bearer c856d570.9901b06a691f4c3da28d3ad830a4e658'}
     res = requests.get(URL, headers=headers)
 
     userids = []
