@@ -8,7 +8,7 @@ from models import db, Complement
 
 
 app = Flask(__name__)
-conversation_id_unique = '' # 단톡 ID
+conversation_id_unique = ''  # 단톡 ID
 
 # Modal Json 파일 읽어오기
 with open('modal.json', 'r') as f:
@@ -35,7 +35,8 @@ def index():
 
         db.session.add(complement)
         db.session.commit()
-        # sendMessage()
+
+        # sendMessage(complement.message_notify())
     return "s"
 
 
@@ -68,35 +69,38 @@ def search():
 # 유저 중 한명이 칭찬을 했을 경우 단톡에 결과 메시지를 보냄
 
 
-
 # 단톡 생성
 def makeConversations():
     userids = get_userIds()
     URL = 'https://api.kakaowork.com/v1/conversations.open'
     headers = {
-               'Authorization': 'Bearer c856d570.9901b06a691f4c3da28d3ad830a4e658','Content-Type': 'application/json;'}
-    data = {'user_ids':userids}
-    res = requests.post(URL, headers=headers,data=json.dumps(data))
+        'Authorization': 'Bearer c856d570.9901b06a691f4c3da28d3ad830a4e658', 'Content-Type': 'application/json;'}
+    data = {'user_ids': userids}
+    res = requests.post(URL, headers=headers, data=json.dumps(data))
     res = res.json()
     global conversation_id_unique
     conversation_id_unique = res['conversation']['id']
     inviteUsers()
 
-# 생성된 단톡에 유저들 초대 (Update)         
+
+# 생성된 단톡에 유저들 초대 (Update)
 def inviteUsers():
-    URL = 'https://api.kakaowork.com/v1/conversations/{conversation_id}/invite'.format(conversation_id=conversation_id_unique)
+    URL = 'https://api.kakaowork.com/v1/conversations/{conversation_id}/invite'.format(
+        conversation_id=conversation_id_unique)
     headers = {
-               'Authorization': 'Bearer c856d570.9901b06a691f4c3da28d3ad830a4e658','Content-Type': 'application/json;'}
-    data = {'user_ids':get_userIds()}
-    res = requests.post(URL, headers=headers,data=json.dumps(data))
+        'Authorization': 'Bearer c856d570.9901b06a691f4c3da28d3ad830a4e658', 'Content-Type': 'application/json;'}
+    data = {'user_ids': get_userIds()}
+    res = requests.post(URL, headers=headers, data=json.dumps(data))
+
 
 # 단톡에 메시지 보내기
 def sendMessage(message):
     URL = 'https://api.kakaowork.com/v1/messages.send'
     headers = {
-               'Authorization': 'Bearer c856d570.9901b06a691f4c3da28d3ad830a4e658','Content-Type': 'application/json;'}
-    data = {'conversation_id':conversation_id_unique, 'text':message}
-    res = requests.post(URL, headers=headers,data=json.dumps(data))
+        'Authorization': 'Bearer c856d570.9901b06a691f4c3da28d3ad830a4e658', 'Content-Type': 'application/json;'}
+    data = {'conversation_id': conversation_id_unique, 'text': message}
+    res = requests.post(URL, headers=headers, data=json.dumps(data))
+
 
 # 유저 이름과 인덱스를 매칭한 딕셔너리를 담는 배열 생성
 def get_userNames():
@@ -110,6 +114,7 @@ def get_userNames():
         users.append({"text": user['name'], "value": i})
 
     return users
+
 
 # 유저 id 배열 생성
 def get_userIds():
