@@ -41,8 +41,9 @@ def send_result_message():
     headers = {
                'Authorization': 'Bearer c856d570.9901b06a691f4c3da28d3ad830a4e658','Content-Type': 'application/json;'}
     for userid in userids:
-        data = {'user_ids':userid}
-        res = requests.post(URL, headers=headers,data=data)
+        data = {'user_id':userid}
+        res = requests.post(URL, headers=headers,data=json.dumps(data))
+        print(res)
 
 def conversation_list():
     URL = 'https://api.kakaowork.com/v1/conversations.list'
@@ -52,4 +53,4 @@ def conversation_list():
     for conversation in res.json()['conversations']:
         conversationIds.append(conversation['id'])
     print(conversationIds)
-print(conversation_list())
+print(send_result_message())
